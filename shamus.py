@@ -18,8 +18,9 @@ class TermColors:
 
 kB = lambda bytes: round(float(bytes) / 1024, 4)
 MB = lambda kbytes: round(float(kbytes) / 1024, 4)
-TermColorMB = lambda val: TermColors.FAIL if val > 10 else TermColors.WARNING
 SEC = lambda time: round(time['end'] - time['start'], 4)
+
+TermColorMB = lambda val: TermColors.FAIL if val > 10 else TermColors.WARNING
 
 
 def shamus(caller_method):
@@ -58,34 +59,38 @@ def shamus(caller_method):
 def get_used_memory(memory):
     """
     Returns memory difference in Mb if more then 1Mb, otherwise in kB.
+    Generates expected terminal color based on the value.
     :param memory: {Dict}
-    :return: {Float}
+    :return: {Tuple}
     """
-    kbytes = kB(memory['end'] - memory['start'])
-    if kbytes > 1024:
-        mb_val = MB(kbytes)
-        return (TermColorMB(mb_val), mb_val, 'MB')
+    kilobytes = kB(memory['end'] - memory['start'])
+    if kilobytes < 1024:
+        return TermColors.OKGREEN, kilobytes, 'kB'
 
-    return (TermColors.OKGREEN, kbytes, 'kB')
+    megabytes = MB(kilobytes)
+    return TermColorMB(megabytes), megabytes, 'MB'
 
 
 def get_used_time(time):
     """
+    Calculate time passed. Specify terminal color to use based on value.
     :param time: {Dict}
-    :return: {Float}
+    :return: {Tuple}
     """
-    diff = SEC(time)
+    time_difference = SEC(time)
     term_color = TermColors.OKGREEN
-    if diff > 5:
-        term_color = TermColors.WARNING
-    if diff > 10:
+    if time_difference > 10:
         term_color = TermColors.FAIL
+    elif time_difference > 5:
+        term_color = TermColors.WARNING
 
-    return (term_color, diff)
+    return term_color, time_difference
 
 
 def export_results(results):
     """
+    Decide on method of exporting results.
+    So far only console is supported.
     """
     memory = get_used_memory(results['memory'])
     time = get_used_time(results['time'])
@@ -94,11 +99,14 @@ def export_results(results):
 
 def console_output(name, memory, time):
     """
+    :param name: {String}
     :param memory: {Tuple}
     :param time: {Tuple}
     """
     print("%s%s%s" % (TermColors.HEADER, 2 * '-', TermColors.ENDC))
     print("%sShamus analysis for %s[%s]%s:" % (TermColors.HEADER, TermColors.BOLD, name, TermColors.ENDC))
+
     print("%s -> Memory: %s [%s]%s" % (memory[0], memory[1], memory[2], TermColors.ENDC))
     print("%s -> Time:   %s [s]%s" % (time[0], time[1], TermColors.ENDC))
+
     print("%s%s%s" % (TermColors.HEADER, 2 * '-', TermColors.ENDC))
