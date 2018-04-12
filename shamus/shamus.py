@@ -7,34 +7,18 @@ from functools import wraps
 import psutil
 
 from term_colors import TermColors
-from utils import levels_options_valid, trailing_slash, format_timestamp
-
-
-class WarningLevels:
-    OK = 'ok'
-    WARNING = 'warning'
-    CRITICAL = 'critical'
-
-    @staticmethod
-    def term_color(level):
-        return {
-            WarningLevels.OK: TermColors.OK_GREEN,
-            WarningLevels.WARNING: TermColors.WARNING,
-            WarningLevels.CRITICAL: TermColors.FAIL
-        }[level]
-
-    @staticmethod
-    def logger_method(level):
-        return {
-            WarningLevels.OK: 'info',
-            WarningLevels.WARNING: 'warning',
-            WarningLevels.CRITICAL: 'critical'
-        }[level]
+from warning_levels import WarningLevels
+from utils import (
+    levels_options_valid,
+    trailing_slash,
+    format_timestamp,
+    log_path_valid
+)
 
 
 DEFAULT_OPTIONS = {
     'output_console': True,
-    'output_log': True,
+    'output_log': False,
     'output_log_dir': '',
     'memory_warning_levels': (1, 15),
     'time_warning_levels': (2, 10)
@@ -49,7 +33,7 @@ def shamus(options={}):
     :param options: {Dict}
     :return: wrapper decorator method.
     """
-    validate_options(options)
+    options = validate_options(options)
 
     def shamus_decorator(caller_method):
         """
@@ -89,27 +73,34 @@ def shamus(options={}):
 def validate_options(options):
     """
     Validate sent options and merge them with default options.
-    If sent options are not valid ignore them.
+    If sent options are not valid kick them out.
     :param options: {Dict}
     :return: {Dict} mutated options.
     """
+    if type(options) is not dict:
+        options = {}
+
     for levels in ['memory_warning_levels', 'time_warning_levels']:
         if levels in options and not levels_options_valid(levels):
             del options[levels]
 
-    # TODO: validate output_log_dir
+    if 'output_log_dir' in options and not log_path_valid(options['output_log_dir']):
+        del options['output_log_dir']
 
-    options.update(DEFAULT_OPTIONS)
+    final_options = DEFAULT_OPTIONS.copy()
+    final_options.update(options)
+    return final_options
 
 
 def get_used_memory(memory, options):
     """
-    Returns memory difference in Mb.
+    Returns memory difference in MB with warning level.
     :param memory: {Dict}
     :return: {Dict}
     """
     value = MB(memory['end'] - memory['start'])
     levels = options['memory_warning_levels']
+
     warning_level = WarningLevels.OK
     if levels[0] < value < levels[1]:
         warning_level = WarningLevels.WARNING
@@ -124,25 +115,28 @@ def get_used_memory(memory, options):
 
 def get_used_time(time, options):
     """
-    Calculate time passed. Specify terminal color to use based on value.
+    Returns passed time in seconds together with warning level.
     :param time: {Dict}
     :return: {Dict}
     """
     value = SEC(time)
     levels = options['time_warning_levels']
-    warning_level = WarningLevels.OK
 
+    warning_level = WarningLevels.OK
     if levels[0] < value < levels[1]:
         warning_level = WarningLevels.WARNING
     elif value >= levels[1]:
         warning_level = WarningLevels.CRITICAL
 
-    return {'warning_level': warning_level, 'val': value}
+    return {
+        'warning_level': warning_level,
+        'val': value
+    }
 
 
 def export_results(results):
     """
-    Decide on method of exporting results.
+    Decide on method of exporting results based on current options.
     """
     memory = get_used_memory(results['memory'], results['options'])
     time = get_used_time(results['time'], results['options'])
@@ -187,7 +181,7 @@ def output_console(name, timestamp, memory, time):
 
 def output_log(name, timestamp, options, memory, time):
     """
-    Dynamic chose logging level based on calculated warning level.
+    Dynamic logging level based on calculated warning level.
     :param name: {String}
     :param timestamp: {Datetime}
     :param options: {Dict}
