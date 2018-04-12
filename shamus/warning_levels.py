@@ -16,6 +16,11 @@ class WarningLevels:
 
     @staticmethod
     def logger_method(level):
+        """
+        Choosing python logging method based on warning level.
+        :param level: {String}
+        :return:
+        """
         return {
             WarningLevels.OK: 'info',
             WarningLevels.WARNING: 'warning',
