@@ -35,6 +35,7 @@ def log_path_valid(log_path):
 
 def trailing_slash(path):
     """
+    Make sure trailing slash exists in the path specified.
     :param path: {String}
     :return: {String}
     """
@@ -45,6 +46,7 @@ def trailing_slash(path):
 
 def format_timestamp(time_object):
     """
+    Format timestamp to string and add UTC timezone.
     :param time_object: {Datetime}
     :return: {String}
     """
