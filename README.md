@@ -1,5 +1,7 @@
 # shamus
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![PyPI](https://img.shields.io/pypi/v/shamus.svg)](https://pypi.org/project/shamus/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/shamus.svg)](https://pypi.org/project/shamus/)
 [![license](https://img.shields.io/github/license/marinko-peso/shamus.svg)](https://github.com/marinko-peso/shamus/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 

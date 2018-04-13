@@ -13,7 +13,17 @@ setup(
     license='MIT',
     packages=find_packages(exclude=['tests*']),
     install_requires=[
-        'psutil>=5.0.0'
+        'psutil>=5.0.0',
     ],
-    zip_safe=False
+    zip_safe=False,
+    classifiers=[
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+    ]
 )
