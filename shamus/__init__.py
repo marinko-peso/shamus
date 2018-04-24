@@ -1,1 +1,5 @@
-from shamus import *
+__all__ = [
+    'shamus'
+]
+
+from shamus import shamus

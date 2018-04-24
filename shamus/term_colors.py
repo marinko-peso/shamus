@@ -1,4 +1,7 @@
-class TermColors:
+__all__ = []
+
+
+class _TermColors:
     HEADER = '\033[95m'
     OK_BLUE = '\033[94m'
     OK_GREEN = '\033[92m'

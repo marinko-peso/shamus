@@ -9,7 +9,7 @@ Small python decorator for basic method time and memory usage.
 
 ## Installation
 
-Available via PyPi, latest version 0.4.
+Available via PyPi, latest version 0.5.
 ```sh
 pip install shamus
 ```
