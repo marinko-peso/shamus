@@ -1,7 +1,9 @@
+__all__ = []
+
 import os
 
 
-def levels_options_valid(levels):
+def _levels_options_valid(levels):
     """
     Validate levels options for legal possibilities.
     :param levels:
@@ -19,9 +21,10 @@ def levels_options_valid(levels):
     return valid
 
 
-def log_path_valid(log_path):
+def _log_path_valid(log_path):
     """
-    If path is sent, make sure its a valid directory and we have write access to it.
+    If path is sent, make sure its a valid directory and
+    we have write access to it.
     :param log_path: {String}
     :return: {Boolean}
     """
@@ -33,7 +36,7 @@ def log_path_valid(log_path):
     return True
 
 
-def trailing_slash(path):
+def _trailing_slash(path):
     """
     Make sure trailing slash exists in the path specified.
     :param path: {String}
@@ -44,7 +47,7 @@ def trailing_slash(path):
     return path
 
 
-def format_timestamp(time_object):
+def _format_timestamp(time_object):
     """
     Format timestamp to string and add UTC timezone.
     :param time_object: {Datetime}

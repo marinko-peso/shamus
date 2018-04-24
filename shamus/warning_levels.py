@@ -1,7 +1,9 @@
-from term_colors import TermColors
+__all__ = []
+
+from term_colors import _TermColors
 
 
-class WarningLevels:
+class _WarningLevels:
     OK = 'ok'
     WARNING = 'warning'
     CRITICAL = 'critical'
@@ -9,9 +11,9 @@ class WarningLevels:
     @staticmethod
     def term_color(level):
         return {
-            WarningLevels.OK: TermColors.OK_GREEN,
-            WarningLevels.WARNING: TermColors.WARNING,
-            WarningLevels.CRITICAL: TermColors.FAIL
+            _WarningLevels.OK: _TermColors.OK_GREEN,
+            _WarningLevels.WARNING: _TermColors.WARNING,
+            _WarningLevels.CRITICAL: _TermColors.FAIL
         }[level]
 
     @staticmethod
@@ -22,7 +24,7 @@ class WarningLevels:
         :return:
         """
         return {
-            WarningLevels.OK: 'info',
-            WarningLevels.WARNING: 'warning',
-            WarningLevels.CRITICAL: 'critical'
+            _WarningLevels.OK: 'info',
+            _WarningLevels.WARNING: 'warning',
+            _WarningLevels.CRITICAL: 'critical'
         }[level]
