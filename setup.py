@@ -6,6 +6,7 @@ setup(
     version='0.5',
     description='Small python decorator for basic method time and memory usage.',
     long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     keywords='decorator memory time method',
     url='https://github.com/marinko-peso/shamus',
     author='Marinko Peso',
