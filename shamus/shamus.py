@@ -8,9 +8,9 @@ from functools import wraps
 
 import psutil
 
-from term_colors import _TermColors
-from warning_levels import _WarningLevels
-from utils import (
+from .term_colors import _TermColors
+from .warning_levels import _WarningLevels
+from .utils import (
     _levels_options_valid,
     _trailing_slash,
     _format_timestamp,
