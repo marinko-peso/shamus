@@ -102,3 +102,6 @@ ENV/
 
 # editor generated files
 .idea/
+
+# os specific
+.DS_Store
