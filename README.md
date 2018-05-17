@@ -9,9 +9,10 @@ Small python decorator for basic method time and memory usage.
 
 ## Installation
 
-Available via PyPi, latest version 0.6. Latest Python 2 compatible version 0.5.
+Available via PyPi, latest version 0.7. Latest Python 2 compatible version 0.5.
 ```sh
 pip install shamus
+pipenv install shamus
 ```
 Depends on ```psutil>=5.0.0```.
 
@@ -88,7 +89,8 @@ Memory and time warning specify three levels, for lets say levels (1, 20):
 
 ## Python versions
 
-Version 0.5 and less are compatible with Python 2.7.x, from 0.6 compatible with Python 3.6.x.
+Version 0.5 and less are compatible with Python 2.7.x (not supported anymore), from 0.6 compatible with Python 3.6.x.
+Time to upgrade that Python people!
 
 ## License
 
