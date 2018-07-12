@@ -4,6 +4,7 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/shamus.svg)](https://pypi.org/project/shamus/)
 [![license](https://img.shields.io/github/license/marinko-peso/shamus.svg)](https://github.com/marinko-peso/shamus/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Last Commit](https://img.shields.io/github/last-commit/marinko-peso/shamus.svg?maxAge=3600)](https://github.com/marinko-peso/shamus/commits/master)
 
 Small python decorator for basic method time and memory usage.
 
