@@ -1,5 +1,15 @@
 __all__ = ['shamus']
 
+if __name__ == '__main__':
+    from term_colors import _TermColors
+    print('{header}{msg}{end}'.format(
+        header=_TermColors.HEADER,
+        msg='shamus says: i am not supposed to be used like this!',
+        end=_TermColors.END_C
+    ))
+    exit(0)
+
+
 import time
 import os
 import logging
@@ -8,9 +18,9 @@ from functools import wraps
 
 import psutil
 
-from term_colors import _TermColors
-from warning_levels import _WarningLevels
-from utils import (
+from .term_colors import _TermColors
+from .warning_levels import _WarningLevels
+from .utils import (
     _levels_options_valid,
     _trailing_slash,
     _format_timestamp,
@@ -76,7 +86,7 @@ def shamus(options={}):
     return shamus_decorator
 
 
-def __validate_options(options):
+def __validate_options(options: dict) -> dict:
     """
     Validate sent options and merge them with default options.
     If sent options are not valid kick them out.
@@ -98,7 +108,7 @@ def __validate_options(options):
     return final_options
 
 
-def __get_used_memory(memory, options):
+def __get_used_memory(memory: dict, options: dict) -> dict:
     """
     Returns memory difference in MB with warning level.
     :param memory: {Dict}
@@ -119,10 +129,11 @@ def __get_used_memory(memory, options):
     }
 
 
-def __get_used_time(time, options):
+def __get_used_time(time: dict, options: dict) -> dict:
     """
     Returns passed time in seconds together with warning level.
     :param time: {Dict}
+    :param options: {Dict}
     :return: {Dict}
     """
     value = SEC(time)
@@ -140,7 +151,7 @@ def __get_used_time(time, options):
     }
 
 
-def __export_results(results):
+def __export_results(results: dict):
     """
     Decide on method of exporting results based on current options.
     """
@@ -160,7 +171,7 @@ def __export_results(results):
         )
 
 
-def __output_console(name, timestamp, memory, time):
+def __output_console(name: str, timestamp: datetime, memory: dict, time: dict):
     """
     :param name: {String}
     :param timestamp: {Datetime}
@@ -168,31 +179,32 @@ def __output_console(name, timestamp, memory, time):
     :param time: {Dict}
     """
     # Delimiter.
-    print('{}--{}'.format(_TermColors.HEADER, _TermColors.END_C))
+    print(f'{_TermColors.HEADER}--{_TermColors.END_C}')
     # Heading.
-    print('{}shamus says @({}) for {}[{}]{}'.format(
-        _TermColors.HEADER,
-        _format_timestamp(timestamp),
-        _TermColors.BOLD,
-        name,
-        _TermColors.END_C)
-    )
+    print('{header}shamus says @({time}) for {b}[{name}]{end}'.format(
+        header=_TermColors.HEADER,
+        time=_format_timestamp(timestamp),
+        b=_TermColors.BOLD,
+        name=name,
+        end=_TermColors.END_C
+    ))
     # Memory.
-    print('{} -> Memory: {} [MB]{}'.format(
-        _WarningLevels.term_color(memory['warning_level']),
-        memory['val'], _TermColors.END_C
+    print('{level} -> Memory: {memory} [MB]{end}'.format(
+        level=_WarningLevels.term_color(memory['warning_level']),
+        memory=memory['val'],
+        end=_TermColors.END_C
     ))
     # Time.
-    print('{} -> Time:   {} [s]{}'.format(
-        _WarningLevels.term_color(time['warning_level']),
-        time['val'],
-        _TermColors.END_C)
-    )
+    print('{level} -> Time:   {time} [s]{end}'.format(
+        level=_WarningLevels.term_color(time['warning_level']),
+        time=time['val'],
+        end=_TermColors.END_C
+    ))
     # Delimiter.
-    print('{}--{}'.format(_TermColors.HEADER, _TermColors.END_C))
+    print(f'{_TermColors.HEADER}--{_TermColors.END_C}')
 
 
-def __output_log(name, timestamp, options, memory, time):
+def __output_log(name: str, timestamp: datetime, options: dict, memory: dict, time: dict):
     """
     Dynamic logging level based on calculated warning level.
     :param name: {String}
@@ -201,33 +213,20 @@ def __output_log(name, timestamp, options, memory, time):
     :param memory: {Dict}
     :param time: {Dict}
     """
-    log_name = '{}shamus_{}.log'.format(
-        _trailing_slash(options['output_log_dir']),
-        name
-    )
+    log_name = f"{_trailing_slash(options['output_log_dir'])}shamus_{name}.log"
     logging.basicConfig(filename=log_name, level=logging.INFO)
 
     # Timestamp logger.
-    logging.info('shamus timestamp: {}'.format(_format_timestamp(timestamp)))
+    logging.info(f'shamus timestamp: {_format_timestamp(timestamp)}')
 
     # Memory logger.
-    mem_logger = getattr(
+    getattr(
         logging,
         _WarningLevels.logger_method(memory['warning_level'])
-    )
-    mem_logger('Memory: {} [MB]'.format(memory['val']))
+    )(f"Memory: {memory.get('val')} [MB]")
 
     # Time logger.
-    time_logger = getattr(
+    getattr(
         logging,
         _WarningLevels.logger_method(time['warning_level'])
-    )
-    time_logger('Time: {} [s]\n'.format(time['val']))
-
-
-if __name__ == '__main__':
-    print('{}{}{}'.format(
-        _TermColors.HEADER,
-        'shamus says: i am not supposed to be used like this!',
-        _TermColors.END_C
-    ))
+    )(f"Time: {time.get('val')} [s]\n")

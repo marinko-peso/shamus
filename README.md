@@ -4,14 +4,16 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/shamus.svg)](https://pypi.org/project/shamus/)
 [![license](https://img.shields.io/github/license/marinko-peso/shamus.svg)](https://github.com/marinko-peso/shamus/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Last Commit](https://img.shields.io/github/last-commit/marinko-peso/shamus.svg?maxAge=3600)](https://github.com/marinko-peso/shamus/commits/master)
 
 Small python decorator for basic method time and memory usage.
 
 ## Installation
 
-Available via PyPi, latest version 0.5.
+Available via PyPi, latest version 0.7. Latest Python 2 compatible version 0.5.
 ```sh
 pip install shamus
+pipenv install shamus
 ```
 Depends on ```psutil>=5.0.0```.
 
@@ -88,7 +90,8 @@ Memory and time warning specify three levels, for lets say levels (1, 20):
 
 ## Python versions
 
-Compatible with Python 2.7.x and 3.6.x.
+Version 0.5 and less are compatible with Python 2.7.x (not supported anymore), from 0.6 compatible with Python 3.6.x.
+Time to upgrade that Python people!
 
 ## License
 

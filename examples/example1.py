@@ -12,7 +12,7 @@ language = ['Python', 'Javascript', 'Java', 'PHP']
 @shamus()
 def generate_coders():
     final_list = list()
-    for i in xrange(800000):
+    for i in range(800000):
         final_list.append({
             'order': i,
             'name': random.choice(names),

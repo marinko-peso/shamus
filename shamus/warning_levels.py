@@ -1,6 +1,6 @@
 __all__ = []
 
-from term_colors import _TermColors
+from .term_colors import _TermColors
 
 
 class _WarningLevels:
